@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>나의 삶 나침반 테스트 — Innera</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;600&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --brand: #0c2f5d;
+    --brand-mid: #1a4a8a;
+    --brand-light: #2560b0;
+    --accent: #c8a96e;
+    --accent-soft: #e8d5a8;
+    --bg: #f4f1eb;
+    --bg-card: #faf8f4;
+    --text-main: #1a1a2e;
+    --text-body: #3a3a4e;
+    --text-muted: #7a7a8e;
+    --border: rgba(12, 47, 93, 0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--bg);
+    color: var(--text-main);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* 배경 텍스처 */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 20% 10%, rgba(12,47,93,0.06) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 80% at 80% 90%, rgba(200,169,110,0.08) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+
+  /* 헤더 */
+  .site-header {
+    padding: 32px 0 0;
+    display: flex;
+    justify-content: center;
+  }
+
+  .logo {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    color: var(--brand);
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
+
+  /* 진행 바 */
+  .progress-wrap {
+    margin: 32px 0 0;
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+
+  .progress-wrap.visible { opacity: 1; }
+
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+  }
+
+  .progress-bar {
+    height: 2px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--brand), var(--brand-light));
+    border-radius: 2px;
+    transition: width 0.5s ease;
+  }
+
+  /* 섹션 공통 */
+  .screen {
+    display: none;
+    animation: fadeUp 0.6s ease forwards;
+  }
+
+  .screen.active { display: block; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* 인트로 */
+  .intro-eyebrow {
+    margin-top: 56px;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    color: var(--accent);
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+
+  .intro-title {
+    font-family: 'Noto Serif KR', serif;
+    font-size: clamp(26px, 5vw, 36px);
+    font-weight: 400;
+    color: var(--brand);
+    line-height: 1.5;
+    margin-top: 16px;
+  }
+
+  .intro-title em {
+    font-style: normal;
+    color: var(--brand-light);
+  }
+
+  .intro-desc {
+    margin-top: 20px;
+    font-size: 15px;
+    line-height: 1.9;
+    color: var(--text-body);
+    font-weight: 300;
+  }
+
+  .intro-meta {
+    display: flex;
+    gap: 24px;
+    margin-top: 28px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+  }
+
+  .intro-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  .meta-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+
+  .btn-start {
+    display: inline-block;
+    margin-top: 40px;
+    padding: 16px 40px;
+    background: var(--brand);
+    color: #fff;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-start::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.08));
+  }
+
+  .btn-start:hover {
+    background: var(--brand-mid);
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(12,47,93,0.25);
+  }
+
+  /* 질문 카드 */
+  .q-number {
+    margin-top: 48px;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  .q-text {
+    font-family: 'Noto Serif KR', serif;
+    font-size: clamp(18px, 3.5vw, 22px);
+    font-weight: 400;
+    color: var(--brand);
+    line-height: 1.6;
+    margin-top: 14px;
+  }
+
+  .options {
+    margin-top: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .option-btn {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 16px 20px;
+    text-align: left;
+    cursor: pointer;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--text-body);
+    line-height: 1.7;
+    transition: all 0.25s ease;
+    position: relative;
+  }
+
+  .option-btn::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--accent);
+    transform: scaleY(0);
+    transition: transform 0.25s ease;
+  }
+
+  .option-btn:hover {
+    border-color: rgba(12,47,93,0.3);
+    background: #fff;
+    color: var(--brand);
+    transform: translateX(2px);
+  }
+
+  .option-btn:hover::before { transform: scaleY(1); }
+
+  .option-btn.selected {
+    border-color: var(--brand);
+    background: rgba(12,47,93,0.04);
+    color: var(--brand);
+  }
+
+  .option-btn.selected::before { transform: scaleY(1); }
+
+  /* 결과 */
+  .result-wrap {
+    margin-top: 48px;
+  }
+
+  .result-type-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 16px;
+    background: rgba(12,47,93,0.06);
+    border: 1px solid var(--border);
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    color: var(--brand);
+    font-weight: 500;
+  }
+
+  .result-emoji { font-size: 18px; }
+
+  .result-title {
+    font-family: 'Noto Serif KR', serif;
+    font-size: clamp(24px, 5vw, 32px);
+    font-weight: 400;
+    color: var(--brand);
+    line-height: 1.4;
+    margin-top: 20px;
+  }
+
+  .result-subtitle {
+    font-size: 15px;
+    color: var(--brand-light);
+    margin-top: 8px;
+    font-weight: 400;
+    font-style: italic;
+  }
+
+  .result-divider {
+    width: 40px;
+    height: 1px;
+    background: var(--accent);
+    margin: 24px 0;
+  }
+
+  .result-body {
+    font-size: 15px;
+    line-height: 2;
+    color: var(--text-body);
+    font-weight: 300;
+    white-space: pre-line;
+  }
+
+  .result-body em {
+    font-style: italic;
+    color: var(--brand);
+    font-weight: 400;
+  }
+
+  .result-closing {
+    margin-top: 32px;
+    padding: 24px;
+    background: rgba(12,47,93,0.04);
+    border-left: 2px solid var(--accent);
+    font-size: 14px;
+    line-height: 1.9;
+    color: var(--text-body);
+    font-weight: 300;
+  }
+
+  /* 리드 수집 */
+  .lead-box {
+    margin-top: 40px;
+    padding: 32px;
+    background: var(--brand);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .lead-box::before {
+    content: '';
+    position: absolute;
+    top: -40px;
+    right: -40px;
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+  }
+
+  .lead-title {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 18px;
+    font-weight: 400;
+    color: #fff;
+    line-height: 1.5;
+  }
+
+  .lead-desc {
+    margin-top: 8px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+    font-weight: 300;
+    line-height: 1.7;
+  }
+
+  .lead-form {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .lead-input {
+    padding: 13px 16px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #fff;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .lead-input::placeholder { color: rgba(255,255,255,0.35); }
+  .lead-input:focus { border-color: var(--accent); }
+
+  .lead-submit {
+    padding: 14px;
+    background: var(--accent);
+    border: none;
+    color: var(--brand);
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    margin-top: 4px;
+  }
+
+  .lead-submit:hover {
+    background: var(--accent-soft);
+    transform: translateY(-1px);
+  }
+
+  .lead-privacy {
+    font-size: 11px;
+    color: rgba(255,255,255,0.35);
+    margin-top: 8px;
+    line-height: 1.6;
+  }
+
+  /* 감사 메시지 */
+  .thankyou {
+    text-align: center;
+    padding: 40px 0;
+  }
+
+  .thankyou-icon {
+    font-size: 32px;
+    display: block;
+    margin-bottom: 16px;
+  }
+
+  .thankyou-title {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 20px;
+    color: var(--brand);
+    font-weight: 400;
+  }
+
+  .thankyou-desc {
+    margin-top: 12px;
+    font-size: 14px;
+    color: var(--text-muted);
+    font-weight: 300;
+    line-height: 1.8;
+  }
+
+  /* 재시작 */
+  .btn-retry {
+    display: inline-block;
+    margin-top: 32px;
+    padding: 12px 28px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-muted);
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-retry:hover {
+    border-color: var(--brand);
+    color: var(--brand);
+  }
+
+  /* 푸터 */
+  .site-footer {
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+  }
+
+  /* 반응형 */
+  @media (max-width: 480px) {
+    .intro-meta { flex-direction: column; gap: 12px; }
+    .lead-box { padding: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="site-header">
+    <span class="logo">Innera</span>
+  </header>
+
+  <div class="progress-wrap" id="progressWrap">
+    <div class="progress-label">
+      <span id="progressText">1 / 10</span>
+      <span id="progressPct">10%</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill" style="width:10%"></div>
+    </div>
+  </div>
+
+  <!-- 인트로 -->
+  <div class="screen active" id="screen-intro">
+    <p class="intro-eyebrow">Innera · 삶 나침반 테스트</p>
+    <h1 class="intro-title">나는 지금<br><em>어디쯤 서 있을까?</em></h1>
+    <p class="intro-desc">
+      열심히 살고 있는데 뭔가 공허한 느낌,<br>
+      뭔가 바꾸고 싶은데 방향을 모르는 느낌.<br><br>
+      10가지 질문에 솔직하게 답하면,<br>
+      지금 내가 어떤 자리에 있는지 알 수 있어요.
+    </p>
+    <div class="intro-meta">
+      <div class="intro-meta-item"><span class="meta-dot"></span>총 10문항</div>
+      <div class="intro-meta-item"><span class="meta-dot"></span>약 3분 소요</div>
+      <div class="intro-meta-item"><span class="meta-dot"></span>정답 없음</div>
+    </div>
+    <button class="btn-start" onclick="startQuiz()">테스트 시작하기</button>
+  </div>
+
+  <!-- 질문 -->
+  <div class="screen" id="screen-quiz">
+    <p class="q-number" id="qNumber">Q 01 / 10</p>
+    <h2 class="q-text" id="qText"></h2>
+    <div class="options" id="optionsList"></div>
+  </div>
+
+  <!-- 결과 -->
+  <div class="screen" id="screen-result">
+    <div class="result-wrap" id="resultContent"></div>
+  </div>
+
+  <footer class="site-footer">© Innera · 삶의 스타일을 디자인합니다</footer>
+</div>
+
+<script>
+const questions = [
+  {
+    text: "아침에 눈을 떴을 때 드는 첫 번째 감정은?",
+    options: [
+      { text: "또 하루가 시작됐네. 그냥 무감각하게 일어난다.", type: "B" },
+      { text: "오늘도 해야 할 게 많다. 바로 움직인다.", type: "A" },
+      { text: "일어나기 싫다. 좀 더 누워있고 싶다.", type: "C" },
+      { text: "오늘은 뭔가 달라질 것 같은 기분이 든다.", type: "E" }
+    ]
+  },
+  {
+    text: "친구가 \"요즘 어때?\" 라고 물으면?",
+    options: [
+      { text: "\"바빠, 근데 뭘 하는지 모르겠어\"라고 답한다.", type: "A" },
+      { text: "\"그냥 그래. 딱히 특별한 게 없어\"라고 답한다.", type: "B" },
+      { text: "\"괜찮아\"라고 말하지만 사실 잘 모르겠다.", type: "D" },
+      { text: "\"뭔가 해보고 싶은데 아직 준비 중\"이라고 답한다.", type: "E" }
+    ]
+  },
+  {
+    text: "내 하루를 가장 잘 표현하는 단어는?",
+    options: [
+      { text: "바쁨 — 늘 무언가를 하고 있다.", type: "A" },
+      { text: "반복 — 어제와 오늘이 비슷하다.", type: "B" },
+      { text: "무기력 — 뭘 해야 할지 모르겠다.", type: "C" },
+      { text: "불안 — 이대로 괜찮은 건지 확신이 없다.", type: "D" }
+    ]
+  },
+  {
+    text: "나에게 \"꿈이 뭐야?\"라고 물으면?",
+    options: [
+      { text: "예전엔 있었는데 지금은 잘 모르겠다.", type: "B" },
+      { text: "꿈보다 당장 해야 할 게 더 많다.", type: "A" },
+      { text: "있긴 한데 말하기 왠지 부끄럽다.", type: "D" },
+      { text: "찾고 있는 중이다.", type: "E" }
+    ]
+  },
+  {
+    text: "SNS에서 \"삶을 바꿨다\"는 글을 보면?",
+    options: [
+      { text: "나도 저렇게 살고 싶다는 생각이 든다.", type: "E" },
+      { text: "부럽긴 한데 나랑은 다른 세계 같다.", type: "C" },
+      { text: "잠깐 보다가 다시 내 할 일 한다.", type: "A" },
+      { text: "왜 나는 저런 확신이 없을까 싶다.", type: "D" }
+    ]
+  },
+  {
+    text: "지금 내 삶에서 가장 결여된 것을 고른다면?",
+    options: [
+      { text: "방향감 — 어디로 가야 할지 모르겠다.", type: "B" },
+      { text: "에너지 — 뭔가를 시작할 힘이 없다.", type: "C" },
+      { text: "진짜 내 모습 — 나답게 살고 있는지 모르겠다.", type: "D" },
+      { text: "확신 — 잘 하고 있는 건지 믿음이 없다.", type: "E" }
+    ]
+  },
+  {
+    text: "중요한 선택 앞에서 나는?",
+    options: [
+      { text: "일단 움직이고 나중에 생각한다.", type: "A" },
+      { text: "계속 미루다가 결국 흐지부지된다.", type: "C" },
+      { text: "남들이 좋다고 하는 쪽으로 간다.", type: "D" },
+      { text: "고민은 많은데 결론이 잘 안 난다.", type: "B" }
+    ]
+  },
+  {
+    text: "나에게 '성공'이란?",
+    options: [
+      { text: "목표를 이루는 것.", type: "A" },
+      { text: "솔직히 잘 모르겠다.", type: "B" },
+      { text: "남들만큼은 해야 한다는 것.", type: "D" },
+      { text: "아직 내 성공의 기준을 만들고 있다.", type: "E" }
+    ]
+  },
+  {
+    text: "요즘 가장 자주 드는 생각은?",
+    options: [
+      { text: "나 이렇게 살아도 되는 건가?", type: "A" },
+      { text: "뭔가 하고 싶은데 뭔지 모르겠다.", type: "B" },
+      { text: "그냥 이대로가 편하긴 한데 불안하다.", type: "C" },
+      { text: "조금씩 바뀌고 있는 것 같기도 하다.", type: "E" }
+    ]
+  },
+  {
+    text: "이 테스트를 하게 된 이유는?",
+    options: [
+      { text: "그냥 심심해서, 재미있을 것 같아서.", type: "B" },
+      { text: "요즘 내가 어떤 상태인지 궁금해서.", type: "A" },
+      { text: "뭔가 변화가 필요할 것 같아서.", type: "E" },
+      { text: "나를 좀 더 알고 싶어서.", type: "D" }
+    ]
+  }
+];
+
+const results = {
+  A: {
+    emoji: "🏃",
+    badge: "달리는 사람",
+    title: "열심히 살고 있는데,\n왜 공허하지?",
+    subtitle: "\"바쁜데 텅 빈 느낌이 드는 당신에게\"",
+    body: `누구보다 성실하게 달려왔을 거예요.
+해야 할 일은 늘 했고, 목표도 세웠고, 포기하지도 않았어요.
+근데 어느 순간 문득 이런 생각이 들었을 거예요.
+
+<em>"나 지금 잘 살고 있는 건가?"</em>
+
+공허함이 느껴진다고 해서 잘못 살고 있는 게 아니에요.
+오히려 그 감각은, 지금보다 더 나답게 살고 싶다는 신호일 수 있어요.
+
+열심히 달리는 것보다 중요한 건,
+내가 원하는 방향으로 달리고 있는가예요.
+
+이제 잠깐 멈춰서, 방향을 한번 확인해봐도 괜찮아요.`
+  },
+  B: {
+    emoji: "🌊",
+    badge: "표류하는 사람",
+    title: "하고 싶은 게 있는 것 같기도 하고,\n없는 것 같기도 하고.",
+    subtitle: "\"흘러가고 있는 것 같은 느낌의 당신에게\"",
+    body: `딱히 불행한 건 아닌데, 딱히 행복하지도 않은 느낌.
+뭔가 해야 할 것 같긴 한데, 뭘 해야 할지 모르는 상태.
+그래서 그냥 하루하루 흘러가고 있는 것 같은 느낌.
+
+이건 의지가 없는 게 아니에요.
+방향을 잃은 게 아니라, 아직 방향을 찾는 중인 거예요.
+
+<em>표류처럼 보이는 이 시간이 사실은,
+나에게 진짜 맞는 방향을 탐색하는 과정일 수 있어요.</em>
+
+지금 이 감각을 무시하지 말고, 한번 들여다봐요.`
+  },
+  C: {
+    emoji: "🔒",
+    badge: "멈춰있는 사람",
+    title: "바꾸고 싶은 마음은 있어.\n근데 첫 발이 안 떼어져.",
+    subtitle: "\"시작이 어려운 당신에게\"",
+    body: `변화하고 싶다는 마음이 없는 게 아니에요.
+오히려 그 마음이 너무 커서, 어디서부터 시작해야 할지 몰라 멈춰있는 거예요.
+
+시작을 못하는 스스로를 탓하고 있을 수도 있어요.
+'나는 왜 이럴까' 하면서요.
+
+근데 멈춰있다는 건, 아직 포기하지 않았다는 뜻이기도 해요.
+<em>완전히 놓아버린 사람은 바꾸고 싶다는 생각조차 안 하거든요.</em>
+
+작은 한 걸음이면 충분해요.
+크게 바꾸려고 하지 않아도 돼요.`
+  },
+  D: {
+    emoji: "🎭",
+    badge: "연기하는 사람",
+    title: "나는 지금 내 삶을 살고 있는 걸까,\n남들의 기대를 살고 있는 걸까.",
+    subtitle: "\"진짜 나를 잃어버린 것 같은 당신에게\"",
+    body: `겉으로 보면 꽤 잘 살고 있는 것처럼 보일 거예요.
+근데 혼자 있을 때, 가끔 이런 생각이 스치지 않나요.
+
+<em>"이게 진짜 내가 원하는 건 맞나?"</em>
+
+남들의 시선에 맞춰 살다 보면,
+어느 순간 내가 뭘 원하는지조차 흐릿해져요.
+그게 나쁜 게 아니에요. 우리는 다 그런 환경 속에서 자랐으니까요.
+
+근데 이제 한 번쯤은, 나 자신한테 솔직하게 물어볼 시간이 필요할 수 있어요.
+"나는 진짜 뭘 원하지?"라고요.`
+  },
+  E: {
+    emoji: "🌱",
+    badge: "싹트는 사람",
+    title: "뭔가 달라지고 싶다는 건 알겠어.\n근데 확신이 없어.",
+    subtitle: "\"변화의 문 앞에 선 당신에게\"",
+    body: `변화의 감각이 느껴지기 시작한 거예요.
+아직 선명하지는 않지만, 분명히 뭔가 움직이고 있는 느낌.
+
+이 불확실함이 불안하게 느껴질 수도 있어요.
+확신이 없으면 시작하면 안 되는 것 같은 느낌도 들고요.
+
+근데 사실 확신은 시작하기 전에 생기는 게 아니에요.
+<em>한 발 내딛으면서 조금씩 생기는 거예요.</em>
+
+지금 이 감각, 놓치지 마세요.
+뭔가 시작되려는 신호일 수 있거든요.`
+  }
+};
+
+let currentQ = 0;
+let scores = { A: 0, B: 0, C: 0, D: 0, E: 0 };
+
+function shuffle(arr) {
+  return arr.map(v => ({ v, s: Math.random() })).sort((a,b) => a.s - b.s).map(x => x.v);
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const el = document.getElementById(id);
+  el.classList.add('active');
+  // 재애니메이션
+  el.style.animation = 'none';
+  el.offsetHeight;
+  el.style.animation = '';
+}
+
+function startQuiz() {
+  currentQ = 0;
+  scores = { A: 0, B: 0, C: 0, D: 0, E: 0 };
+  document.getElementById('progressWrap').classList.add('visible');
+  showScreen('screen-quiz');
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = questions[currentQ];
+  document.getElementById('qNumber').textContent = `Q ${String(currentQ+1).padStart(2,'0')} / 10`;
+  document.getElementById('qText').textContent = q.text;
+
+  const shuffled = shuffle(q.options);
+  const list = document.getElementById('optionsList');
+  list.innerHTML = '';
+  shuffled.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.textContent = opt.text;
+    btn.onclick = () => selectOption(opt.type, btn);
+    list.appendChild(btn);
+  });
+
+  updateProgress();
+}
+
+function selectOption(type, btn) {
+  document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  scores[type]++;
+
+  setTimeout(() => {
+    currentQ++;
+    if (currentQ < questions.length) {
+      renderQuestion();
+      showScreen('screen-quiz');
+    } else {
+      showResult();
+    }
+  }, 400);
+}
+
+function updateProgress() {
+  const pct = Math.round(((currentQ + 1) / 10) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressText').textContent = `${currentQ + 1} / 10`;
+  document.getElementById('progressPct').textContent = pct + '%';
+}
+
+function getTopType() {
+  return Object.entries(scores).sort((a,b) => b[1] - a[1])[0][0];
+}
+
+function showResult() {
+  const type = getTopType();
+  const r = results[type];
+
+  let bodyHtml = r.body.replace(/<em>(.*?)<\/em>/g, '<em>$1</em>');
+
+  const html = `
+    <div class="result-type-badge">
+      <span class="result-emoji">${r.emoji}</span>
+      <span>${r.badge}</span>
+    </div>
+    <h2 class="result-title">${r.title.replace(/\n/g, '<br>')}</h2>
+    <p class="result-subtitle">${r.subtitle}</p>
+    <div class="result-divider"></div>
+    <div class="result-body">${bodyHtml}</div>
+    <div class="result-closing">
+      어떤 유형이든, 지금 이 질문을 하고 있다는 것 자체가 이미 시작이에요.<br><br>
+      이네라는 정답을 알려주는 곳이 아니에요.<br>
+      당신이 진짜 원하는 삶이 뭔지, 함께 들여다보는 곳이에요.
+    </div>
+    <div class="lead-box">
+      <p class="lead-title">결과를 저장하고<br>1:1 탐색 상담 신청하기</p>
+      <p class="lead-desc">이름과 이메일을 남겨주시면 상담 안내를 드릴게요.<br>부담 없이 남겨주세요.</p>
+      <div class="lead-form" id="leadForm">
+        <input class="lead-input" type="text" id="leadName" placeholder="이름" />
+        <input class="lead-input" type="email" id="leadEmail" placeholder="이메일" />
+        <button class="lead-submit" onclick="submitLead('${type}')">상담 신청하기 →</button>
+      </div>
+      <p class="lead-privacy">수집된 정보는 상담 안내 외 다른 용도로 사용되지 않습니다.</p>
+    </div>
+    <div style="text-align:center; margin-top:32px;">
+      <button class="btn-retry" onclick="restartQuiz()">다시 테스트하기</button>
+    </div>
+  `;
+
+  document.getElementById('resultContent').innerHTML = html;
+  updateProgress();
+  document.getElementById('progressFill').style.width = '100%';
+  document.getElementById('progressText').textContent = '완료';
+  document.getElementById('progressPct').textContent = '100%';
+  showScreen('screen-result');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+async function submitLead(type) {
+  const name = document.getElementById('leadName').value.trim();
+  const email = document.getElementById('leadEmail').value.trim();
+
+  if (!name || !email) {
+    alert('이름과 이메일을 모두 입력해주세요.');
+    return;
+  }
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    alert('올바른 이메일 형식을 입력해주세요.');
+    return;
+  }
+
+  const submitBtn = document.querySelector('.lead-submit');
+  submitBtn.textContent = '전송 중...';
+  submitBtn.disabled = true;
+
+  const typeNames = { A: '달리는 사람', B: '표류하는 사람', C: '멈춰있는 사람', D: '연기하는 사람', E: '싹트는 사람' };
+
+  try {
+    await fetch('https://script.google.com/macros/s/AKfycbw_72TPHBk-by7N_RakMInDZlmNk-gjUr85oNk76bwXRo9GoQx1bgmFuCeqUuT_LinG_Q/exec', {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: name,
+        contact: email,
+        type: type,
+        typeName: typeNames[type] || type
+      })
+    });
+  } catch(err) {
+    console.log('전송 오류:', err);
+  }
+
+  document.getElementById('leadForm').innerHTML = `
+    <div class="thankyou">
+      <span class="thankyou-icon">✦</span>
+      <p class="thankyou-title">신청이 완료되었어요</p>
+      <p class="thankyou-desc">${name}님, 곧 연락드릴게요.<br>잠시만 기다려주세요.</p>
+    </div>
+  `;
+}
+
+function restartQuiz() {
+  currentQ = 0;
+  scores = { A: 0, B: 0, C: 0, D: 0, E: 0 };
+  document.getElementById('progressFill').style.width = '10%';
+  document.getElementById('progressText').textContent = '1 / 10';
+  document.getElementById('progressPct').textContent = '10%';
+  showScreen('screen-quiz');
+  renderQuestion();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
