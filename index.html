@@ -239,7 +239,7 @@
     cursor: pointer;
     font-family: 'Noto Sans KR', sans-serif;
     font-size: 14px;
-    font-weight: 300;
+    font-weight: 400;
     color: var(--text-body);
     line-height: 1.7;
     transition: all 0.25s ease;
@@ -453,6 +453,47 @@
     color: var(--text-muted);
     font-weight: 300;
     line-height: 1.8;
+  }
+
+  /* 공유 버튼 */
+  .share-box {
+    margin-top: 24px;
+    padding: 20px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    text-align: center;
+  }
+
+  .share-title {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-weight: 400;
+    margin-bottom: 12px;
+  }
+
+  .share-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 28px;
+    background: var(--brand);
+    color: #fff;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    letter-spacing: 0.05em;
+  }
+
+  .share-btn:hover {
+    background: var(--brand-mid);
+    transform: translateY(-1px);
+  }
+
+  .share-btn.copied {
+    background: #2a7a4a;
   }
 
   /* 재시작 */
@@ -694,8 +735,8 @@ const questions = [
       { text: "9~10점. 열심히 살고 있고, 성과도 있다. 근데 뭔가 빠진 느낌이다.", type: "A" },
       { text: "5~6점. 그냥 평범하게 흘러가고 있다.", type: "B" },
       { text: "4점 이하. 솔직히 뭔가 바뀌어야 할 것 같다.", type: "C" },
-      { text: "6~7점. 겉으로는 괜찮아 보이는데 속은 다르다.", type: "D" },
-      { text: "7~8점. 지금은 낮지만 올라가고 있는 느낌이다.", type: "E" }
+      { text: "6~7점. 남들이 보기엔 괜찮아 보이는데 속은 다르다.", type: "D" },
+      { text: "7~8점. 지금은 낮지만 조금씩 올라가고 있는 느낌이다.", type: "E" }
     ]
   },
   {
@@ -1249,6 +1290,10 @@ function showResult() {
       </div>
       <p class="lead-privacy">수집된 정보는 상담 안내 외 다른 용도로 사용되지 않습니다.</p>
     </div>
+    <div class="share-box">
+      <p class="share-title">나의 유형을 친구에게 공유해보세요</p>
+      <button class="share-btn" id="shareBtn" onclick="shareResult('${type}')">🔗 결과 링크 복사하기</button>
+    </div>
     <div style="text-align:center; margin-top:32px;">
       <button class="btn-retry" onclick="restartQuiz()">다시 테스트하기</button>
     </div>
@@ -1308,6 +1353,32 @@ async function submitLead(type) {
     </div>
   `;
 }
+
+function shareResult(type) {
+  const url = `${location.origin}${location.pathname}?result=${type}`;
+  navigator.clipboard.writeText(url).then(() => {
+    const btn = document.getElementById('shareBtn');
+    btn.textContent = '✓ 링크가 복사됐어요';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = '🔗 결과 링크 복사하기';
+      btn.classList.remove('copied');
+    }, 2500);
+  }).catch(() => {
+    prompt('아래 링크를 복사해주세요', `${location.origin}${location.pathname}?result=${type}`);
+  });
+}
+
+// URL 파라미터로 결과 직접 접근
+window.addEventListener('DOMContentLoaded', () => {
+  const params = new URLSearchParams(location.search);
+  const resultParam = params.get('result');
+  if (resultParam && results[resultParam]) {
+    document.getElementById('progressWrap').classList.add('visible');
+    scores[resultParam] = 20;
+    showResult();
+  }
+});
 
 function restartQuiz() {
   currentQ = 0;
