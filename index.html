@@ -529,6 +529,9 @@
 
   .icon-copy .icon-circle { background: var(--brand); }
   .icon-x .icon-circle { background: #000; }
+  .icon-kakao .icon-circle { background: #FEE500; }
+  .icon-kakao .icon-circle svg path { fill: #3A1D1D; }
+
   .icon-facebook .icon-circle { background: #1877f2; }
 
   .icon-circle svg {
@@ -685,6 +688,7 @@
     .lead-box { padding: 24px; }
   }
 </style>
+<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js" integrity="sha384-TiCUE00h649CAMonG018J2ujOgDKW/kVWlChEuu4jK2vxfAAD0eZxzCKakxg55G4" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -705,7 +709,7 @@
 
   <!-- 인트로 -->
   <div class="screen active" id="screen-intro">
-    <p class="intro-eyebrow">Innera · 삶 나침반 테스트</p>
+    <p class="intro-eyebrow">Innera · 나침반 테스트</p>
     <h1 class="intro-title">나는 지금<br><em>어디쯤 서 있을까?</em></h1>
     <p class="intro-desc">
       열심히 살고 있는데 뭔가 공허한 느낌,<br>
@@ -1354,6 +1358,14 @@ function showResult() {
           </div>
           <span class="icon-label">X 공유</span>
         </button>
+        <button class="share-icon-btn icon-kakao" onclick="shareToKakao('${type}')">
+          <div class="icon-circle">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 3C6.477 3 2 6.477 2 10.5c0 2.572 1.608 4.833 4.04 6.18L5.1 20.1a.5.5 0 0 0 .72.55l4.5-2.7c.55.07 1.11.1 1.68.1 5.523 0 10-3.477 10-7.55C22 6.477 17.523 3 12 3z" fill="#3A1D1D"/>
+            </svg>
+          </div>
+          <span class="icon-label">카카오톡</span>
+        </button>
         <button class="share-icon-btn icon-facebook" onclick="shareToFacebook('${type}')">
           <div class="icon-circle">
             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -1445,6 +1457,35 @@ function shareToX(type) {
   const typeNames = { A: '결승선을 모르는 마라토너', B: '닻을 올린 채 멈춘 사람', C: '출발선 앞에 서 있는 사람', D: '남의 대본 속에 사는 사람', E: '첫 장을 펼친 사람' };
   const text = `나는 '${typeNames[type]}' 유형이 나왔어요.\n나의 삶 나침반 테스트 — Innera\n`;
   window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
+}
+
+// 카카오 SDK 초기화
+Kakao.init('5ae7de4b585ebc8e5561a997c7fbb339');
+
+function shareToKakao(type) {
+  const url = `${location.origin}${location.pathname}?result=${type}`;
+  const typeNames = { A: '결승선을 모르는 마라토너', B: '닻을 올린 채 멈춘 사람', C: '출발선 앞에 서 있는 사람', D: '남의 대본 속에 사는 사람', E: '첫 장을 펼친 사람' };
+  Kakao.Share.sendDefault({
+    objectType: 'feed',
+    content: {
+      title: `나는 '${typeNames[type]}' 유형이에요`,
+      description: '이네라 나침반 테스트 — 나는 지금 어디쯤 서 있을까?',
+      imageUrl: 'https://innera-kr.github.io/innera-quiz/og-thumbnail.png',
+      link: {
+        mobileWebUrl: url,
+        webUrl: url,
+      },
+    },
+    buttons: [
+      {
+        title: '나도 테스트하기',
+        link: {
+          mobileWebUrl: 'https://innera-kr.github.io/innera-quiz/',
+          webUrl: 'https://innera-kr.github.io/innera-quiz/',
+        },
+      },
+    ],
+  });
 }
 
 function shareToFacebook(type) {
