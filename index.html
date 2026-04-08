@@ -3,7 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>나의 삶 나침반 테스트 — Innera</title>
+<title>이네라 나침반 테스트 — 나는 지금 어디쯤 서 있을까?</title>
+
+<!-- OG 태그 -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="이네라 나침반 테스트 — 나는 지금 어디쯤 서 있을까?">
+<meta property="og:description" content="20문항으로 알아보는 나의 삶의 유형. 자기결정이론 기반 5가지 유형 진단.">
+<meta property="og:image" content="https://innera-kr.github.io/innera-quiz/og-thumbnail.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://innera-kr.github.io/innera-quiz/">
+<meta property="og:site_name" content="Innera">
+
+<!-- 트위터 카드 -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="이네라 나침반 테스트 — 나는 지금 어디쯤 서 있을까?">
+<meta name="twitter:description" content="20문항으로 알아보는 나의 삶의 유형. 자기결정이론 기반 5가지 유형 진단.">
+<meta name="twitter:image" content="https://innera-kr.github.io/innera-quiz/og-thumbnail.png">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;600&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -468,32 +484,61 @@
     font-size: 13px;
     color: var(--text-muted);
     font-weight: 400;
-    margin-bottom: 12px;
+    margin-bottom: 16px;
   }
 
-  .share-btn {
-    display: inline-flex;
+  .share-btns {
+    display: flex;
+    justify-content: center;
     align-items: center;
-    gap: 8px;
-    padding: 12px 28px;
-    background: var(--brand);
-    color: #fff;
-    font-family: 'Noto Sans KR', sans-serif;
-    font-size: 13px;
-    font-weight: 500;
-    border: none;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .share-icon-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
     cursor: pointer;
-    transition: all 0.25s ease;
-    letter-spacing: 0.05em;
+    background: none;
+    border: none;
+    padding: 0;
   }
 
-  .share-btn:hover {
-    background: var(--brand-mid);
-    transform: translateY(-1px);
+  .share-icon-btn .icon-circle {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
   }
 
-  .share-btn.copied {
-    background: #2a7a4a;
+  .share-icon-btn:hover .icon-circle {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+
+  .share-icon-btn .icon-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 400;
+  }
+
+  .icon-copy .icon-circle { background: var(--brand); }
+  .icon-x .icon-circle { background: #000; }
+  .icon-facebook .icon-circle { background: #1877f2; }
+
+  .icon-circle svg {
+    width: 22px;
+    height: 22px;
+    fill: #fff;
+  }
+
+  .share-icon-btn.copied .icon-circle {
+    background: #2a7a4a !important;
   }
 
   /* 재시작 */
@@ -1292,7 +1337,32 @@ function showResult() {
     </div>
     <div class="share-box">
       <p class="share-title">나의 유형을 친구에게 공유해보세요</p>
-      <button class="share-btn" id="shareBtn" onclick="shareResult('${type}')">🔗 결과 링크 복사하기</button>
+      <div class="share-btns">
+        <button class="share-icon-btn icon-copy" id="shareBtn" onclick="shareResult('${type}')">
+          <div class="icon-circle">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M16 1H4C2.9 1 2 1.9 2 3v14h2V3h12V1zm3 4H8C6.9 5 6 5.9 6 7v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+            </svg>
+          </div>
+          <span class="icon-label">링크 복사</span>
+        </button>
+        <button class="share-icon-btn icon-x" onclick="shareToX('${type}')">
+          <div class="icon-circle">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.91-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+            </svg>
+          </div>
+          <span class="icon-label">X 공유</span>
+        </button>
+        <button class="share-icon-btn icon-facebook" onclick="shareToFacebook('${type}')">
+          <div class="icon-circle">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+            </svg>
+          </div>
+          <span class="icon-label">페이스북</span>
+        </button>
+      </div>
     </div>
     <div style="text-align:center; margin-top:32px;">
       <button class="btn-retry" onclick="restartQuiz()">다시 테스트하기</button>
@@ -1358,15 +1428,28 @@ function shareResult(type) {
   const url = `${location.origin}${location.pathname}?result=${type}`;
   navigator.clipboard.writeText(url).then(() => {
     const btn = document.getElementById('shareBtn');
-    btn.textContent = '✓ 링크가 복사됐어요';
+    const label = btn.querySelector('.icon-label');
     btn.classList.add('copied');
+    label.textContent = '복사됨 ✓';
     setTimeout(() => {
-      btn.textContent = '🔗 결과 링크 복사하기';
       btn.classList.remove('copied');
+      label.textContent = '링크 복사';
     }, 2500);
   }).catch(() => {
     prompt('아래 링크를 복사해주세요', `${location.origin}${location.pathname}?result=${type}`);
   });
+}
+
+function shareToX(type) {
+  const url = `${location.origin}${location.pathname}?result=${type}`;
+  const typeNames = { A: '결승선을 모르는 마라토너', B: '닻을 올린 채 멈춘 사람', C: '출발선 앞에 서 있는 사람', D: '남의 대본 속에 사는 사람', E: '첫 장을 펼친 사람' };
+  const text = `나는 '${typeNames[type]}' 유형이 나왔어요.\n나의 삶 나침반 테스트 — Innera\n`;
+  window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
+}
+
+function shareToFacebook(type) {
+  const url = `${location.origin}${location.pathname}?result=${type}`;
+  window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank', 'width=600,height=400');
 }
 
 // URL 파라미터로 결과 직접 접근
