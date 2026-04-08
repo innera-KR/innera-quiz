@@ -207,6 +207,14 @@
     font-weight: 500;
   }
 
+  .q-section {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: var(--text-muted);
+    font-weight: 400;
+    margin-top: 6px;
+  }
+
   .q-text {
     font-family: 'Noto Serif KR', serif;
     font-size: clamp(18px, 3.5vw, 22px);
@@ -466,6 +474,114 @@
     color: var(--brand);
   }
 
+  .result-section {
+    margin-top: 28px;
+  }
+
+  .result-section-label {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    font-weight: 500;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .result-section-body {
+    font-size: 15px;
+    line-height: 2;
+    color: var(--text-body);
+    font-weight: 300;
+    white-space: pre-line;
+  }
+
+  .result-section-body em {
+    font-style: italic;
+    color: var(--brand);
+    font-weight: 400;
+  }
+
+  .result-section:last-child .result-section-body {
+    background: rgba(12,47,93,0.04);
+    border-left: 2px solid var(--accent);
+    padding: 16px 20px;
+    font-style: italic;
+    color: var(--brand);
+  }
+
+  .result-section + .result-section {
+    padding-top: 28px;
+    border-top: 1px solid var(--border);
+  }
+
+  /* 유형 카드 섹션 */
+  .type-cards-section {
+    margin-top: 48px;
+  }
+
+  .type-cards-title {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--text-muted);
+    font-weight: 500;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .type-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .type-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    transition: all 0.2s ease;
+  }
+
+  .type-card.is-me {
+    border-color: var(--brand);
+    background: rgba(12,47,93,0.04);
+  }
+
+  .type-card-emoji {
+    font-size: 18px;
+    flex-shrink: 0;
+    width: 28px;
+    text-align: center;
+  }
+
+  .type-card-info {
+    flex: 1;
+  }
+
+  .type-card-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--brand);
+    line-height: 1.4;
+  }
+
+  .type-card.is-me .type-card-name::after {
+    content: ' ← 나';
+    font-size: 11px;
+    color: var(--accent);
+    font-weight: 400;
+  }
+
+  .type-card-desc {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 300;
+    margin-top: 2px;
+    line-height: 1.5;
+  }
+
   /* 푸터 */
   .site-footer {
     margin-top: 64px;
@@ -512,8 +628,8 @@
       지금 내가 어떤 자리에 있는지 알 수 있어요.
     </p>
     <div class="intro-meta">
-      <div class="intro-meta-item"><span class="meta-dot"></span>총 10문항</div>
-      <div class="intro-meta-item"><span class="meta-dot"></span>약 3분 소요</div>
+      <div class="intro-meta-item"><span class="meta-dot"></span>총 20문항</div>
+      <div class="intro-meta-item"><span class="meta-dot"></span>약 5분 소요</div>
       <div class="intro-meta-item"><span class="meta-dot"></span>정답 없음</div>
     </div>
     <button class="btn-start" onclick="startQuiz()">테스트 시작하기</button>
@@ -521,7 +637,8 @@
 
   <!-- 질문 -->
   <div class="screen" id="screen-quiz">
-    <p class="q-number" id="qNumber">Q 01 / 10</p>
+    <p class="q-number" id="qNumber">Q 01 / 20</p>
+    <p class="q-section" id="qSection"></p>
     <h2 class="q-text" id="qText"></h2>
     <div class="options" id="optionsList"></div>
   </div>
@@ -536,94 +653,228 @@
 
 <script>
 const questions = [
+  // 섹션 1 — 일상과 에너지 패턴
   {
+    section: "섹션 1 · 일상과 에너지 패턴",
+    text: "하루가 끝날 때 가장 자주 드는 감정은?",
+    options: [
+      { text: "뭔가 열심히 했는데, 뭘 한 건지 모르겠다.", type: "A" },
+      { text: "그냥 또 하루가 지나갔다. 특별한 감정이 없다.", type: "B" },
+      { text: "피곤한데, 내일도 똑같을 것 같아서 더 피곤하다.", type: "C" },
+      { text: "남들 눈에는 잘 살고 있는 것 같은데, 나는 잘 모르겠다.", type: "D" },
+      { text: "뭔가 조금씩 달라지고 있는 것 같기도 하다.", type: "E" }
+    ]
+  },
+  {
+    section: "섹션 1 · 일상과 에너지 패턴",
     text: "아침에 눈을 떴을 때 드는 첫 번째 감정은?",
     options: [
-      { text: "또 하루가 시작됐네. 그냥 무감각하게 일어난다.", type: "B" },
       { text: "오늘도 해야 할 게 많다. 바로 움직인다.", type: "A" },
-      { text: "일어나기 싫다. 좀 더 누워있고 싶다.", type: "C" },
+      { text: "또 하루가 시작됐네. 그냥 무감각하게 일어난다.", type: "B" },
+      { text: "일어나기 싫다. 조금만 더 누워있고 싶다.", type: "C" },
+      { text: "일어나긴 하는데, 오늘 하루가 내 것인지 잘 모르겠다.", type: "D" },
       { text: "오늘은 뭔가 달라질 것 같은 기분이 든다.", type: "E" }
     ]
   },
   {
-    text: "친구가 \"요즘 어때?\" 라고 물으면?",
+    section: "섹션 1 · 일상과 에너지 패턴",
+    text: "요즘 나에게 에너지를 주는 것이 있나요?",
     options: [
-      { text: "\"바빠, 근데 뭘 하는지 모르겠어\"라고 답한다.", type: "A" },
-      { text: "\"그냥 그래. 딱히 특별한 게 없어\"라고 답한다.", type: "B" },
-      { text: "\"괜찮아\"라고 말하지만 사실 잘 모르겠다.", type: "D" },
-      { text: "\"뭔가 해보고 싶은데 아직 준비 중\"이라고 답한다.", type: "E" }
+      { text: "바쁘게 움직이는 것 자체가 에너지인 것 같다.", type: "A" },
+      { text: "아직 찾고 있는 중이다.", type: "B" },
+      { text: "딱히 없다. 그냥 의무감으로 움직이고 있다.", type: "C" },
+      { text: "있긴 한데, 그게 진짜 내가 원하는 건지 모르겠다.", type: "D" },
+      { text: "최근에 뭔가 새롭게 끌리는 게 생긴 것 같다.", type: "E" }
     ]
   },
   {
-    text: "내 하루를 가장 잘 표현하는 단어는?",
+    section: "섹션 1 · 일상과 에너지 패턴",
+    text: "지금 내 삶의 만족도를 10점 만점으로 표현하면?",
     options: [
-      { text: "바쁨 — 늘 무언가를 하고 있다.", type: "A" },
-      { text: "반복 — 어제와 오늘이 비슷하다.", type: "B" },
-      { text: "무기력 — 뭘 해야 할지 모르겠다.", type: "C" },
-      { text: "불안 — 이대로 괜찮은 건지 확신이 없다.", type: "D" }
+      { text: "7~8점. 나쁘진 않은데 뭔가 빠진 느낌이다.", type: "A" },
+      { text: "5~6점. 그냥 평범하게 흘러가고 있다.", type: "B" },
+      { text: "4점 이하. 솔직히 뭔가 바뀌어야 할 것 같다.", type: "C" },
+      { text: "6~7점. 겉으로는 괜찮아 보이는데 속은 다르다.", type: "D" },
+      { text: "6~7점. 지금은 낮지만 올라가고 있는 느낌이다.", type: "E" }
     ]
   },
   {
-    text: "나에게 \"꿈이 뭐야?\"라고 물으면?",
+    section: "섹션 1 · 일상과 에너지 패턴",
+    text: "쉬는 날, 아무것도 하지 않아도 되는 시간이 생기면?",
     options: [
-      { text: "예전엔 있었는데 지금은 잘 모르겠다.", type: "B" },
-      { text: "꿈보다 당장 해야 할 게 더 많다.", type: "A" },
-      { text: "있긴 한데 말하기 왠지 부끄럽다.", type: "D" },
-      { text: "찾고 있는 중이다.", type: "E" }
+      { text: "쉬어야 하는데 자꾸 뭔가를 하게 된다.", type: "A" },
+      { text: "뭘 해야 할지 몰라서 그냥 시간이 흘러간다.", type: "B" },
+      { text: "아무것도 하기 싫어서 그냥 누워있는다.", type: "C" },
+      { text: "쉬는 건데도 왜인지 불안하고 죄책감이 든다.", type: "D" },
+      { text: "요즘 해보고 싶은 게 생겨서 그걸 한다.", type: "E" }
+    ]
+  },
+  // 섹션 2 — 관계와 역할
+  {
+    section: "섹션 2 · 관계와 역할",
+    text: "중요한 결정을 내릴 때 가장 많이 고려하는 것은?",
+    options: [
+      { text: "빨리 결정하고 실행하는 것. 고민보다 행동이 먼저다.", type: "A" },
+      { text: "딱히 기준이 없어서 그냥 흘러가는 대로 간다.", type: "B" },
+      { text: "실패할까 봐 두려워서 최대한 안전한 선택을 한다.", type: "C" },
+      { text: "주변 사람들이 어떻게 생각할지가 많이 신경 쓰인다.", type: "D" },
+      { text: "내가 진짜 원하는 방향인지 생각해보려 한다.", type: "E" }
     ]
   },
   {
-    text: "SNS에서 \"삶을 바꿨다\"는 글을 보면?",
+    section: "섹션 2 · 관계와 역할",
+    text: "가까운 사람들은 나를 어떤 사람으로 보고 있을까?",
     options: [
-      { text: "나도 저렇게 살고 싶다는 생각이 든다.", type: "E" },
-      { text: "부럽긴 한데 나랑은 다른 세계 같다.", type: "C" },
-      { text: "잠깐 보다가 다시 내 할 일 한다.", type: "A" },
-      { text: "왜 나는 저런 확신이 없을까 싶다.", type: "D" }
+      { text: "열심히 사는 사람. 늘 바쁘고 성실한 사람.", type: "A" },
+      { text: "무난한 사람. 특별히 튀지 않는 사람.", type: "B" },
+      { text: "조용한 사람. 뭔가 있어 보이는데 표현을 안 하는 사람.", type: "C" },
+      { text: "잘 하는 사람. 근데 나는 그게 진짜 나인지 모르겠다.", type: "D" },
+      { text: "요즘 뭔가 달라진 것 같다는 말을 듣는다.", type: "E" }
     ]
   },
   {
-    text: "지금 내 삶에서 가장 결여된 것을 고른다면?",
+    section: "섹션 2 · 관계와 역할",
+    text: "누군가 나에게 \"너는 뭘 좋아해?\"라고 물으면?",
     options: [
-      { text: "방향감 — 어디로 가야 할지 모르겠다.", type: "B" },
-      { text: "에너지 — 뭔가를 시작할 힘이 없다.", type: "C" },
-      { text: "진짜 내 모습 — 나답게 살고 있는지 모르겠다.", type: "D" },
-      { text: "확신 — 잘 하고 있는 건지 믿음이 없다.", type: "E" }
+      { text: "좋아하는 건 있는데, 그걸 즐길 시간이 없다.", type: "A" },
+      { text: "딱히 떠오르는 게 없다. 예전엔 있었던 것 같은데.", type: "B" },
+      { text: "알긴 아는데 막상 말하기가 어렵다.", type: "C" },
+      { text: "내가 진짜 좋아하는 건지, 좋아해야 한다고 생각하는 건지 모르겠다.", type: "D" },
+      { text: "최근에 새롭게 관심 생긴 게 있어서 말할 수 있다.", type: "E" }
     ]
   },
   {
-    text: "중요한 선택 앞에서 나는?",
+    section: "섹션 2 · 관계와 역할",
+    text: "지금 내 삶에서 가장 많은 에너지를 쏟고 있는 곳은?",
     options: [
-      { text: "일단 움직이고 나중에 생각한다.", type: "A" },
-      { text: "계속 미루다가 결국 흐지부지된다.", type: "C" },
-      { text: "남들이 좋다고 하는 쪽으로 간다.", type: "D" },
-      { text: "고민은 많은데 결론이 잘 안 난다.", type: "B" }
+      { text: "일, 목표, 성과. 멈추면 뒤처질 것 같다.", type: "A" },
+      { text: "딱히 없다. 그냥 하루하루 버티는 느낌이다.", type: "B" },
+      { text: "아무것도 없다. 에너지 자체가 없는 상태다.", type: "C" },
+      { text: "남들 기대에 맞추는 것. 실망시키지 않으려는 것.", type: "D" },
+      { text: "새롭게 시작하고 싶은 것에 조금씩 쏟고 있다.", type: "E" }
     ]
   },
   {
-    text: "나에게 '성공'이란?",
+    section: "섹션 2 · 관계와 역할",
+    text: "나는 내 감정을 주변에 잘 표현하는 편인가?",
     options: [
-      { text: "목표를 이루는 것.", type: "A" },
-      { text: "솔직히 잘 모르겠다.", type: "B" },
-      { text: "남들만큼은 해야 한다는 것.", type: "D" },
-      { text: "아직 내 성공의 기준을 만들고 있다.", type: "E" }
+      { text: "표현할 시간이 없다. 늘 바빠서 감정을 들여다볼 틈이 없다.", type: "A" },
+      { text: "표현하고 싶은데 뭘 느끼는지 잘 모르겠다.", type: "B" },
+      { text: "표현하고 싶은데 어떻게 해야 할지 모르겠다.", type: "C" },
+      { text: "표현을 잘 안 한다. 내 감정을 보여주는 게 부담스럽다.", type: "D" },
+      { text: "예전보다 조금씩 표현하려고 노력하고 있다.", type: "E" }
+    ]
+  },
+  // 섹션 3 — 선택과 행동 방식
+  {
+    section: "섹션 3 · 선택과 행동 방식",
+    text: "뭔가 새로운 것을 시작해야 할 때 나는?",
+    options: [
+      { text: "일단 시작하고 본다. 완벽하지 않아도 된다.", type: "A" },
+      { text: "시작하고 싶은데 뭘 시작해야 할지 모르겠다.", type: "B" },
+      { text: "준비가 될 때까지 기다린다. 그러다 결국 못 한다.", type: "C" },
+      { text: "이게 맞는 방향인지 확신이 없어서 망설인다.", type: "D" },
+      { text: "작은 것부터 시도해보고 있다.", type: "E" }
     ]
   },
   {
-    text: "요즘 가장 자주 드는 생각은?",
+    section: "섹션 3 · 선택과 행동 방식",
+    text: "과거에 내린 중요한 결정을 돌아보면?",
     options: [
-      { text: "나 이렇게 살아도 되는 건가?", type: "A" },
-      { text: "뭔가 하고 싶은데 뭔지 모르겠다.", type: "B" },
-      { text: "그냥 이대로가 편하긴 한데 불안하다.", type: "C" },
-      { text: "조금씩 바뀌고 있는 것 같기도 하다.", type: "E" }
+      { text: "열심히 했던 것 같은데, 그게 맞는 선택이었는지 모르겠다.", type: "A" },
+      { text: "딱히 큰 결정을 내린 적이 없는 것 같다. 그냥 흘러왔다.", type: "B" },
+      { text: "항상 안전한 쪽을 선택했던 것 같다.", type: "C" },
+      { text: "남들이 좋다고 하는 방향으로 많이 갔던 것 같다.", type: "D" },
+      { text: "후회도 있지만, 그 경험들이 지금의 나를 만든 것 같다.", type: "E" }
     ]
   },
   {
-    text: "이 테스트를 하게 된 이유는?",
+    section: "섹션 3 · 선택과 행동 방식",
+    text: "지금 당장 모든 제약이 사라진다면 가장 먼저 하고 싶은 것은?",
     options: [
-      { text: "그냥 심심해서, 재미있을 것 같아서.", type: "B" },
-      { text: "요즘 내가 어떤 상태인지 궁금해서.", type: "A" },
-      { text: "뭔가 변화가 필요할 것 같아서.", type: "E" },
-      { text: "나를 좀 더 알고 싶어서.", type: "D" }
+      { text: "하고 싶은 건 있는데, 현실적으로 불가능할 것 같다.", type: "A" },
+      { text: "솔직히 뭘 하고 싶은지 잘 모르겠다.", type: "B" },
+      { text: "그냥 푹 쉬고 싶다. 아무것도 안 하고 싶다.", type: "C" },
+      { text: "내가 진짜 원하는 게 뭔지 찾는 시간을 갖고 싶다.", type: "D" },
+      { text: "지금 조금씩 시도하고 있는 것을 본격적으로 해보고 싶다.", type: "E" }
+    ]
+  },
+  {
+    section: "섹션 3 · 선택과 행동 방식",
+    text: "누군가 나에게 \"요즘 행복해?\"라고 물으면?",
+    options: [
+      { text: "\"바쁘긴 한데, 행복한지는 모르겠어\"라고 답한다.", type: "A" },
+      { text: "\"그냥 그래\"라고 답한다.", type: "B" },
+      { text: "\"잘 모르겠어\"라고 답하거나 말을 돌린다.", type: "C" },
+      { text: "\"응 괜찮아\"라고 말하지만 사실 확신이 없다.", type: "D" },
+      { text: "\"요즘 조금씩 나아지고 있는 것 같아\"라고 답한다.", type: "E" }
+    ]
+  },
+  {
+    section: "섹션 3 · 선택과 행동 방식",
+    text: "지금 나에게 가장 필요한 것을 고른다면?",
+    options: [
+      { text: "방향. 열심히 하고 있는데 어디로 가는지 모르겠다.", type: "A" },
+      { text: "나침반. 지금 어디에 있는지조차 모르겠다.", type: "B" },
+      { text: "용기. 알고 있는데 시작이 두렵다.", type: "C" },
+      { text: "나다움. 내가 누구인지, 뭘 원하는지 알고 싶다.", type: "D" },
+      { text: "확신. 가고 있는 방향이 맞는지 믿음이 필요하다.", type: "E" }
+    ]
+  },
+  // 섹션 4 — 가치관과 방향
+  {
+    section: "섹션 4 · 가치관과 방향",
+    text: "나에게 '성공한 삶'이란?",
+    options: [
+      { text: "목표를 이루는 것. 근데 왜 이루려 하는지 생각해본 적은 없다.", type: "A" },
+      { text: "솔직히 아직 잘 모르겠다. 생각해본 적이 별로 없다.", type: "B" },
+      { text: "지금보다 더 나은 상태. 구체적으로는 잘 모르겠다.", type: "C" },
+      { text: "남들이 인정해주는 삶. 근데 그게 전부인지 모르겠다.", type: "D" },
+      { text: "내가 원하는 방식대로 사는 것. 그 기준을 만들어가고 있다.", type: "E" }
+    ]
+  },
+  {
+    section: "섹션 4 · 가치관과 방향",
+    text: "10년 후의 나를 상상하면?",
+    options: [
+      { text: "지금보다 더 많은 걸 이루고 있을 것 같다. 근데 행복할지는 모르겠다.", type: "A" },
+      { text: "잘 상상이 안 된다. 막연하다.", type: "B" },
+      { text: "지금이랑 크게 다르지 않을 것 같아서 불안하다.", type: "C" },
+      { text: "남들이 보기에 괜찮은 삶을 살고 있을 것 같다.", type: "D" },
+      { text: "지금과 다른 삶을 살고 있을 것 같다. 그 그림을 그려가고 있다.", type: "E" }
+    ]
+  },
+  {
+    section: "섹션 4 · 가치관과 방향",
+    text: "지금 내가 가장 두려운 것은?",
+    options: [
+      { text: "이렇게 열심히 살았는데 결국 아무 의미가 없으면 어쩌지.", type: "A" },
+      { text: "이대로 아무것도 바뀌지 않고 나이만 먹는 것.", type: "B" },
+      { text: "시작했다가 실패하는 것. 그래서 시작을 못 하고 있다.", type: "C" },
+      { text: "나답게 살려고 했다가 주변 관계가 흔들리는 것.", type: "D" },
+      { text: "지금 감지되는 변화가 다시 사라져버리는 것.", type: "E" }
+    ]
+  },
+  {
+    section: "섹션 4 · 가치관과 방향",
+    text: "나는 나 자신을 얼마나 잘 알고 있다고 생각하나요?",
+    options: [
+      { text: "뭘 잘하는지는 아는데, 뭘 원하는지는 모르겠다.", type: "A" },
+      { text: "잘 모르겠다. 생각해볼 시간이 없었던 것 같다.", type: "B" },
+      { text: "알고 싶은데 어떻게 알아야 할지 모르겠다.", type: "C" },
+      { text: "알고 있다고 생각했는데, 요즘 들어 다시 모르겠다.", type: "D" },
+      { text: "예전보다는 조금씩 알아가고 있는 것 같다.", type: "E" }
+    ]
+  },
+  {
+    section: "섹션 4 · 가치관과 방향",
+    text: "이 테스트를 하게 된 가장 솔직한 이유는?",
+    options: [
+      { text: "열심히 살고 있는데 뭔가 빠진 것 같아서.", type: "A" },
+      { text: "내가 지금 어떤 상태인지 궁금해서.", type: "B" },
+      { text: "뭔가 바꾸고 싶은데 어디서부터 시작해야 할지 몰라서.", type: "C" },
+      { text: "내가 진짜 원하는 게 뭔지 알고 싶어서.", type: "D" },
+      { text: "변화가 시작되는 것 같아서, 방향을 잡고 싶어서.", type: "E" }
     ]
   }
 ];
@@ -631,90 +882,238 @@ const questions = [
 const results = {
   A: {
     emoji: "🏃",
-    badge: "달리는 사람",
+    badge: "결승선을 모르는 마라토너",
     title: "열심히 살고 있는데,\n왜 공허하지?",
     subtitle: "\"바쁜데 텅 빈 느낌이 드는 당신에게\"",
-    body: `누구보다 성실하게 달려왔을 거예요.
-해야 할 일은 늘 했고, 목표도 세웠고, 포기하지도 않았어요.
-근데 어느 순간 문득 이런 생각이 들었을 거예요.
+    sections: [
+      {
+        label: "지금 이런 느낌이지 않나요",
+        body: `해야 할 일은 늘 했고, 목표도 세웠고, 멈추지도 않았어요.
+주변에서 보면 분명 잘 살고 있는 사람처럼 보일 거예요.
+
+근데 어느 순간 문득 이런 생각이 스쳤을 거예요.
 
 <em>"나 지금 잘 살고 있는 건가?"</em>
 
-공허함이 느껴진다고 해서 잘못 살고 있는 게 아니에요.
-오히려 그 감각은, 지금보다 더 나답게 살고 싶다는 신호일 수 있어요.
+공허함이 느껴지는데, 그 공허함의 정체를 딱히 설명하기도 어렵고.
+멈추면 뒤처질 것 같아서 그냥 계속 달리고 있는 상태.`
+      },
+      {
+        label: "심리학적으로 보면",
+        body: `심리학에서는 이 상태를 <em>'목표 중독 패턴'</em>이라고 해요.
 
-열심히 달리는 것보다 중요한 건,
-내가 원하는 방향으로 달리고 있는가예요.
+목표를 향해 달리는 동안에는 방향이 있는 것처럼 느껴지지만, 막상 이루고 나면 다음 목표가 생기고, 또 달리고, 또 이루고. 이 사이클이 반복되면서 정작 "이게 내가 원하는 삶인가"라는 질문을 할 틈이 없어져요.
 
-이제 잠깐 멈춰서, 방향을 한번 확인해봐도 괜찮아요.`
+자기결정이론(SDT)에 따르면, 사람은 외부 기준이 아닌 자신이 진정으로 원하는 것을 향해 움직일 때 비로소 지속적인 만족감을 느껴요. 바쁨과 성취가 있어도 공허함이 남는다면, 그건 의지나 노력의 문제가 아니에요. <em>방향의 문제예요.</em>`
+      },
+      {
+        label: "이 유형의 함정",
+        body: `이 유형이 가장 빠지기 쉬운 함정은 <em>"더 열심히 하면 해결될 거야"</em>라는 생각이에요.
+
+공허함을 느낄 때 더 바빠지거나, 더 큰 목표를 세우는 방식으로 그 감각을 덮으려 해요. 근데 그렇게 하면 할수록 진짜 질문은 더 깊이 묻혀요.
+
+열심히 사는 것과, 내가 원하는 방향으로 사는 것은 다를 수 있어요.`
+      },
+      {
+        label: "이네라의 시선",
+        body: `공허함을 느낀다는 건, 지금보다 더 나답게 살고 싶다는 신호예요.
+그 감각은 잘못된 게 아니에요. 오히려 지금이 방향을 확인할 타이밍이라는 뜻이에요.
+
+결승선을 모른 채 달리고 있다면, 잠깐 멈춰서 물어볼 수 있어요.
+<em>"나는 어디를 향해 달리고 싶은가?"</em>`
+      },
+      {
+        label: "스스로에게 던져볼 질문",
+        body: `<em>"나는 지금 내가 원해서 달리고 있는가,
+아니면 멈추는 게 두려워서 달리고 있는가?"</em>`
+      }
+    ]
   },
   B: {
     emoji: "🌊",
-    badge: "표류하는 사람",
+    badge: "닻을 올린 채 멈춘 사람",
     title: "하고 싶은 게 있는 것 같기도 하고,\n없는 것 같기도 하고.",
     subtitle: "\"흘러가고 있는 것 같은 느낌의 당신에게\"",
-    body: `딱히 불행한 건 아닌데, 딱히 행복하지도 않은 느낌.
+    sections: [
+      {
+        label: "지금 이런 느낌이지 않나요",
+        body: `딱히 불행한 건 아닌데, 딱히 행복하지도 않은 느낌.
 뭔가 해야 할 것 같긴 한데, 뭘 해야 할지 모르는 상태.
-그래서 그냥 하루하루 흘러가고 있는 것 같은 느낌.
+그냥 하루하루가 비슷하게 흘러가고 있고, 그게 불안하기도 하고 또 어쩔 수 없기도 하고.
 
-이건 의지가 없는 게 아니에요.
-방향을 잃은 게 아니라, 아직 방향을 찾는 중인 거예요.
+<em>"나만 이렇게 사는 건가?"</em> 라는 생각이 가끔 스치지 않나요.`
+      },
+      {
+        label: "심리학적으로 보면",
+        body: `이 상태는 심리학에서 <em>'무동기 상태(Amotivation)'</em>에 가까워요.
 
-<em>표류처럼 보이는 이 시간이 사실은,
-나에게 진짜 맞는 방향을 탐색하는 과정일 수 있어요.</em>
+하고 싶은 것도 없고, 하기 싫은 것도 없는 무감각한 상태. 이건 의지가 약한 게 아니에요. 오랫동안 자신이 원하는 것보다 해야 하는 것에 맞춰 살다 보면, 어느 순간 내면의 신호 자체가 희미해져요.
 
-지금 이 감각을 무시하지 말고, 한번 들여다봐요.`
+자기결정이론에서는 이를 <em>'내적 나침반의 소실'</em>이라고 해요. 방향을 잃은 게 아니라, 방향을 감지하는 감각 자체가 둔해진 상태예요. 그리고 이 감각은 다시 깨울 수 있어요.`
+      },
+      {
+        label: "이 유형의 함정",
+        body: `이 유형이 가장 빠지기 쉬운 함정은 <em>"때가 되면 뭔가 달라지겠지"</em>라는 기다림이에요.
+
+변화는 저절로 오지 않아요. 특히 방향을 모를 때는, 움직임보다 탐색이 먼저예요. 근데 탐색하려면 먼저 "나는 지금 뭘 원하는가"라는 질문을 스스로에게 던져야 해요.
+
+그 질문을 계속 미루면, 흘러가는 시간이 길어질수록 더 막막해져요.`
+      },
+      {
+        label: "이네라의 시선",
+        body: `표류처럼 보이는 이 시간이 사실은, 나에게 맞는 방향을 탐색하는 과정일 수 있어요.
+
+방향을 모른다는 건 실패가 아니에요. 아직 찾지 못한 것뿐이에요. 그리고 찾으려면, 지금 이 감각을 무시하지 말고 한번 들여다봐야 해요.
+
+<em>흘러가는 것과 나아가는 것은 달라요.</em>
+지금 이 질문을 시작하는 것 자체가 이미 나아가는 것이에요.`
+      },
+      {
+        label: "스스로에게 던져볼 질문",
+        body: `<em>"지금 내가 흘러가고 있는 이 방향은,
+내가 선택한 것인가, 그냥 떠내려온 것인가?"</em>`
+      }
+    ]
   },
   C: {
     emoji: "🔒",
-    badge: "멈춰있는 사람",
+    badge: "출발선 앞에 서 있는 사람",
     title: "바꾸고 싶은 마음은 있어.\n근데 첫 발이 안 떼어져.",
     subtitle: "\"시작이 어려운 당신에게\"",
-    body: `변화하고 싶다는 마음이 없는 게 아니에요.
+    sections: [
+      {
+        label: "지금 이런 느낌이지 않나요",
+        body: `변화하고 싶다는 마음이 없는 게 아니에요.
 오히려 그 마음이 너무 커서, 어디서부터 시작해야 할지 몰라 멈춰있는 거예요.
 
-시작을 못하는 스스로를 탓하고 있을 수도 있어요.
-'나는 왜 이럴까' 하면서요.
+시작을 못 하는 스스로를 탓하고 있을 수도 있어요.
+<em>'나는 왜 이럴까. 의지가 없는 건가.'</em> 하면서요.
 
-근데 멈춰있다는 건, 아직 포기하지 않았다는 뜻이기도 해요.
-<em>완전히 놓아버린 사람은 바꾸고 싶다는 생각조차 안 하거든요.</em>
+근데 사실 멈춰있다는 건, 아직 포기하지 않았다는 뜻이기도 해요.`
+      },
+      {
+        label: "심리학적으로 보면",
+        body: `이 상태는 <em>'행동 억제 시스템(Behavioral Inhibition System)'</em>이 과활성화된 상태예요.
 
-작은 한 걸음이면 충분해요.
-크게 바꾸려고 하지 않아도 돼요.`
+뇌는 불확실한 상황에서 잠재적 위협을 감지하면 자동으로 행동을 멈추게 해요. 이건 나약함이 아니라, 실패에 대한 두려움이 과거 경험으로 인해 강화된 결과예요.
+
+특히 완벽주의 성향이 강한 사람일수록 이 패턴이 두드러져요. 완벽하게 준비된 후에 시작하려다가, 영원히 시작을 못 하는 것. 심리학에서는 이를 <em>'분석 마비(Analysis Paralysis)'</em>라고 해요.`
+      },
+      {
+        label: "이 유형의 함정",
+        body: `이 유형이 가장 빠지기 쉬운 함정은 <em>"더 준비되면 시작할 수 있을 거야"</em>라는 생각이에요.
+
+준비는 시작 전에 완성되지 않아요. 시작하면서 완성돼요. 확신도 마찬가지예요. 움직이기 전에 생기는 게 아니라, 움직이면서 조금씩 생기는 거예요.
+
+크게 바꾸려 하지 않아도 돼요. 작은 한 걸음이면 충분해요.`
+      },
+      {
+        label: "이네라의 시선",
+        body: `출발선 앞에 서 있다는 건, 이미 출발을 결심했다는 뜻이에요.
+완전히 포기한 사람은 출발선 근처에도 오지 않거든요.
+
+지금 여기까지 온 것 자체가 용기예요.
+그리고 그 용기는, 완벽한 준비가 아니라 <em>작은 한 발짝으로 이어질 수 있어요.</em>`
+      },
+      {
+        label: "스스로에게 던져볼 질문",
+        body: `<em>"지금 내가 기다리고 있는 '준비된 순간'은,
+언제쯤 올 것 같은가?"</em>`
+      }
+    ]
   },
   D: {
     emoji: "🎭",
-    badge: "연기하는 사람",
-    title: "나는 지금 내 삶을 살고 있는 걸까,\n남들의 기대를 살고 있는 걸까.",
+    badge: "남의 대본 속에 사는 사람",
+    title: "나는 지금 내 삶을 살고 있는 걸까,\n남의 대본 속에 살고 있는 걸까.",
     subtitle: "\"진짜 나를 잃어버린 것 같은 당신에게\"",
-    body: `겉으로 보면 꽤 잘 살고 있는 것처럼 보일 거예요.
+    sections: [
+      {
+        label: "지금 이런 느낌이지 않나요",
+        body: `겉으로 보면 꽤 잘 살고 있는 것처럼 보일 거예요.
+열심히 했고, 기대에 부응했고, 실망시키지 않으려 노력했어요.
+
 근데 혼자 있을 때, 가끔 이런 생각이 스치지 않나요.
 
 <em>"이게 진짜 내가 원하는 건 맞나?"</em>
+<em>"나는 지금 내 삶을 살고 있는 건가, 남들의 기대를 살고 있는 건가."</em>`
+      },
+      {
+        label: "심리학적으로 보면",
+        body: `이 상태는 <em>'자기 소외(Self-Alienation)'</em>와 관련이 있어요.
 
-남들의 시선에 맞춰 살다 보면,
-어느 순간 내가 뭘 원하는지조차 흐릿해져요.
-그게 나쁜 게 아니에요. 우리는 다 그런 환경 속에서 자랐으니까요.
+사람은 어릴 때부터 사랑받고 인정받기 위해 타인의 기대에 맞추는 법을 배워요. 이게 반복되면 어느 순간 타인의 기준이 내 기준처럼 느껴지기 시작해요. 내가 원하는 것과 원해야 한다고 생각하는 것의 경계가 흐릿해지는 거예요.
 
-근데 이제 한 번쯤은, 나 자신한테 솔직하게 물어볼 시간이 필요할 수 있어요.
-"나는 진짜 뭘 원하지?"라고요.`
+심리학자 칼 로저스는 이를 <em>'조건부 자기존중감'</em>이라고 했어요. 무언가를 해야만, 혹은 특정 모습이어야만 가치 있다는 믿음. 이 믿음이 강할수록 진짜 나로 살기가 어려워요.`
+      },
+      {
+        label: "이 유형의 함정",
+        body: `이 유형이 가장 빠지기 쉬운 함정은 <em>"지금 잘 하고 있는데 굳이 바꿔야 해?"</em>라는 생각이에요.
+
+겉으로 잘 돌아가고 있는 것처럼 보이기 때문에, 이 불편함을 그냥 넘기게 돼요. 근데 그 작은 불편함은 사라지지 않아요. 시간이 지날수록 더 선명해지거든요.
+
+남의 대본 속에서 조연으로 사는 것에 익숙해지면, 주인공으로 사는 법을 잊어버리게 돼요.`
+      },
+      {
+        label: "이네라의 시선",
+        body: `지금 이 질문을 하고 있다는 것 자체가, 이미 나다운 삶을 원하고 있다는 증거예요.
+
+남의 기대에 맞춰 살아온 건 나약해서가 아니에요. 그렇게 살아야 한다고 배웠기 때문이에요. 근데 이제 다른 방식으로 살 수 있다는 걸 알아가는 중이에요.
+
+<em>내 삶의 주인공은 나예요. 대본을 다시 쓸 수 있어요.</em>`
+      },
+      {
+        label: "스스로에게 던져볼 질문",
+        body: `<em>"지금 내가 하고 있는 선택들 중에서,
+진짜 내가 원해서 하는 것은 몇 가지인가?"</em>`
+      }
+    ]
   },
   E: {
     emoji: "🌱",
-    badge: "싹트는 사람",
+    badge: "첫 장을 펼친 사람",
     title: "뭔가 달라지고 싶다는 건 알겠어.\n근데 확신이 없어.",
     subtitle: "\"변화의 문 앞에 선 당신에게\"",
-    body: `변화의 감각이 느껴지기 시작한 거예요.
+    sections: [
+      {
+        label: "지금 이런 느낌이지 않나요",
+        body: `변화의 감각이 느껴지기 시작했어요.
 아직 선명하지는 않지만, 분명히 뭔가 움직이고 있는 느낌.
 
 이 불확실함이 불안하게 느껴질 수도 있어요.
-확신이 없으면 시작하면 안 되는 것 같은 느낌도 들고요.
+<em>"확신이 없는데 시작해도 되는 건가?"</em>
+<em>"잘못된 방향으로 가고 있는 건 아닐까?"</em>`
+      },
+      {
+        label: "심리학적으로 보면",
+        body: `이 상태는 심리학에서 <em>'전환점(Transition Point)'</em>에 있는 상태예요.
 
-근데 사실 확신은 시작하기 전에 생기는 게 아니에요.
-<em>한 발 내딛으면서 조금씩 생기는 거예요.</em>
+변화 심리학자 윌리엄 브리지스는 모든 변화에는 세 단계가 있다고 했어요. 끝남, 중간 지대, 새로운 시작. 지금 이 유형은 중간 지대에 있는 상태예요. 뭔가 끝났는데 아직 새로운 것이 완전히 시작되지 않은, 그 사이의 불확실한 공간.
 
-지금 이 감각, 놓치지 마세요.
-뭔가 시작되려는 신호일 수 있거든요.`
+이 공간이 불안하게 느껴지는 건 자연스러운 거예요. 근데 이 불안은 위험 신호가 아니에요. <em>변화가 실제로 일어나고 있다는 신호예요.</em>`
+      },
+      {
+        label: "이 유형의 함정",
+        body: `이 유형이 가장 빠지기 쉬운 함정은 <em>"확신이 생길 때까지 기다리자"</em>라는 생각이에요.
+
+확신은 기다린다고 오지 않아요. 한 발 내딛으면서 조금씩 생기는 거예요. 지금 느끼는 변화의 감각을 그냥 지나치거나, 불안하다는 이유로 덮어버리면 그 감각은 다시 희미해질 수 있어요.
+
+이 감각이 선명할 때, 작은 행동 하나가 큰 전환점이 될 수 있어요.`
+      },
+      {
+        label: "이네라의 시선",
+        body: `첫 장을 펼쳤다는 건, 이미 새로운 이야기를 시작했다는 뜻이에요.
+
+아직 어떤 이야기가 펼쳐질지 모르는 게 당연해요. 첫 장에서 결말을 알 수는 없으니까요. 근데 확실한 건, 지금 이 순간이 그 이야기의 시작이라는 거예요.
+
+<em>확신이 없어도 괜찮아요. 방향은 걸으면서 만들어지는 거예요.</em>`
+      },
+      {
+        label: "스스로에게 던져볼 질문",
+        body: `<em>"지금 내 안에서 느껴지는 이 감각,
+나는 그것에 얼마나 귀를 기울이고 있는가?"</em>`
+      }
+    ]
   }
 };
 
@@ -745,8 +1144,12 @@ function startQuiz() {
 
 function renderQuestion() {
   const q = questions[currentQ];
-  document.getElementById('qNumber').textContent = `Q ${String(currentQ+1).padStart(2,'0')} / 10`;
+  document.getElementById('qNumber').textContent = `Q ${String(currentQ+1).padStart(2,'0')} / 20`;
   document.getElementById('qText').textContent = q.text;
+
+  // 섹션 라벨 표시
+  const sectionEl = document.getElementById('qSection');
+  if (sectionEl) sectionEl.textContent = q.section || '';
 
   const shuffled = shuffle(q.options);
   const list = document.getElementById('optionsList');
@@ -779,9 +1182,9 @@ function selectOption(type, btn) {
 }
 
 function updateProgress() {
-  const pct = Math.round(((currentQ + 1) / 10) * 100);
+  const pct = Math.round(((currentQ + 1) / 20) * 100);
   document.getElementById('progressFill').style.width = pct + '%';
-  document.getElementById('progressText').textContent = `${currentQ + 1} / 10`;
+  document.getElementById('progressText').textContent = `${currentQ + 1} / 20`;
   document.getElementById('progressPct').textContent = pct + '%';
 }
 
@@ -793,7 +1196,30 @@ function showResult() {
   const type = getTopType();
   const r = results[type];
 
-  let bodyHtml = r.body.replace(/<em>(.*?)<\/em>/g, '<em>$1</em>');
+  const sectionsHtml = r.sections.map(s => `
+    <div class="result-section">
+      <p class="result-section-label">${s.label}</p>
+      <div class="result-section-body">${s.body}</div>
+    </div>
+  `).join('');
+
+  const allTypes = [
+    { key: 'A', emoji: '🏃', name: '결승선을 모르는 마라토너', desc: '누구보다 열심히 달리는데, 왜 공허할까' },
+    { key: 'B', emoji: '🌊', name: '닻을 올린 채 멈춘 사람', desc: '흘러가고는 있는데, 방향을 모르는 사람' },
+    { key: 'C', emoji: '🔒', name: '출발선 앞에 서 있는 사람', desc: '바꾸고 싶은 마음은 있는데, 첫 발이 안 떼어지는 사람' },
+    { key: 'D', emoji: '🎭', name: '남의 대본 속에 사는 사람', desc: '열심히 살았는데 알고 보니 조연이었던 사람' },
+    { key: 'E', emoji: '🌱', name: '첫 장을 펼친 사람', desc: '뭔가 시작되는 느낌인데, 확신이 없는 사람' },
+  ];
+
+  const typeCardsHtml = allTypes.map(t => `
+    <div class="type-card ${t.key === type ? 'is-me' : ''}">
+      <span class="type-card-emoji">${t.emoji}</span>
+      <div class="type-card-info">
+        <div class="type-card-name">${t.name}</div>
+        <div class="type-card-desc">${t.desc}</div>
+      </div>
+    </div>
+  `).join('');
 
   const html = `
     <div class="result-type-badge">
@@ -803,14 +1229,18 @@ function showResult() {
     <h2 class="result-title">${r.title.replace(/\n/g, '<br>')}</h2>
     <p class="result-subtitle">${r.subtitle}</p>
     <div class="result-divider"></div>
-    <div class="result-body">${bodyHtml}</div>
+    ${sectionsHtml}
     <div class="result-closing">
       어떤 유형이든, 지금 이 질문을 하고 있다는 것 자체가 이미 시작이에요.<br><br>
       이네라는 정답을 알려주는 곳이 아니에요.<br>
       당신이 진짜 원하는 삶이 뭔지, 함께 들여다보는 곳이에요.
     </div>
+    <div class="type-cards-section">
+      <p class="type-cards-title">5가지 유형 한눈에 보기</p>
+      <div class="type-cards">${typeCardsHtml}</div>
+    </div>
     <div class="lead-box">
-      <p class="lead-title">결과를 저장하고<br>1:1 탐색 상담 신청하기</p>
+      <p class="lead-title">결과를 저장하고<br>1:1 무료 탐색 상담 신청하기</p>
       <p class="lead-desc">이름과 이메일을 남겨주시면 상담 안내를 드릴게요.<br>부담 없이 남겨주세요.</p>
       <div class="lead-form" id="leadForm">
         <input class="lead-input" type="text" id="leadName" placeholder="이름" />
@@ -852,7 +1282,7 @@ async function submitLead(type) {
   submitBtn.textContent = '전송 중...';
   submitBtn.disabled = true;
 
-  const typeNames = { A: '달리는 사람', B: '표류하는 사람', C: '멈춰있는 사람', D: '연기하는 사람', E: '싹트는 사람' };
+  const typeNames = { A: '결승선을 모르는 마라토너', B: '닻을 올린 채 멈춘 사람', C: '출발선 앞에 서 있는 사람', D: '남의 대본 속에 사는 사람', E: '첫 장을 펼친 사람' };
 
   try {
     await fetch('https://script.google.com/macros/s/AKfycbw_72TPHBk-by7N_RakMInDZlmNk-gjUr85oNk76bwXRo9GoQx1bgmFuCeqUuT_LinG_Q/exec', {
@@ -882,9 +1312,9 @@ async function submitLead(type) {
 function restartQuiz() {
   currentQ = 0;
   scores = { A: 0, B: 0, C: 0, D: 0, E: 0 };
-  document.getElementById('progressFill').style.width = '10%';
-  document.getElementById('progressText').textContent = '1 / 10';
-  document.getElementById('progressPct').textContent = '10%';
+  document.getElementById('progressFill').style.width = '5%';
+  document.getElementById('progressText').textContent = '1 / 20';
+  document.getElementById('progressPct').textContent = '5%';
   showScreen('screen-quiz');
   renderQuestion();
   window.scrollTo({ top: 0, behavior: 'smooth' });
