@@ -354,10 +354,10 @@
     padding: 24px;
     background: rgba(12,47,93,0.04);
     border-left: 2px solid var(--accent);
-    font-size: 14px;
+    font-size: 15px;
     line-height: 1.9;
     color: var(--text-body);
-    font-weight: 300;
+    font-weight: 400;
   }
 
   /* 리드 수집 */
@@ -576,11 +576,40 @@
     margin-bottom: 10px;
   }
 
+  /* 이 상태를 방치하면 — 경고 스타일 */
+  .result-section[data-label="warning"] .result-section-label {
+    color: #c0392b;
+  }
+
+  .result-section[data-label="warning"] .result-section-body {
+    background: rgba(192,57,43,0.05);
+    border-left: 2px solid #c0392b;
+    padding: 16px 20px;
+    color: var(--text-body);
+  }
+
+  .result-section[data-label="warning"] .result-section-body em {
+    color: #c0392b;
+    font-style: italic;
+  }
+
+  /* 상담에서 이런 걸 함께 해요 — CTA 스타일 */
+  .result-section[data-label="consult"] .result-section-label {
+    color: var(--brand);
+  }
+
+  .result-section[data-label="consult"] .result-section-body {
+    background: rgba(12,47,93,0.05);
+    border-left: 2px solid var(--brand);
+    padding: 16px 20px;
+    color: var(--text-body);
+  }
+
   .result-section-body {
     font-size: 15px;
     line-height: 2;
     color: var(--text-body);
-    font-weight: 300;
+    font-weight: 400;
     white-space: pre-line;
   }
 
@@ -1016,6 +1045,20 @@ const results = {
         label: "스스로에게 던져볼 질문",
         body: `<em>"나는 지금 내가 원해서 달리고 있는가,
 아니면 멈추는 게 두려워서 달리고 있는가?"</em>`
+      },
+      {
+        label: "이 상태를 방치하면",
+        body: `지금 이 공허함을 그냥 두면, 1년 후에도 같은 자리에서 같은 질문을 하고 있을 가능성이 높아요.
+
+더 열심히 하면 해결될 거라는 생각으로 더 바빠지고, 더 큰 목표를 세우고, 그러다 어느 순간 번아웃이 오거나 몸이 먼저 신호를 보내요.
+
+<em>열심히 살았는데 정작 나는 없는 삶.</em> 그게 이 패턴의 끝이에요.`
+      },
+      {
+        label: "상담에서 이런 걸 함께 해요",
+        body: `지금 달리고 있는 방향이 진짜 내가 원하는 방향인지 함께 들여다봐요.
+
+바쁨 속에 묻혀있던 내가 진짜 원하는 것을 꺼내는 시간이에요. 멈추지 않아도 돼요. 방향만 확인하면 돼요.`
       }
     ]
   },
@@ -1062,6 +1105,20 @@ const results = {
         label: "스스로에게 던져볼 질문",
         body: `<em>"지금 내가 흘러가고 있는 이 방향은,
 내가 선택한 것인가, 그냥 떠내려온 것인가?"</em>`
+      },
+      {
+        label: "이 상태를 방치하면",
+        body: `흘러가는 시간은 생각보다 빠르게 쌓여요.
+
+1년이 지나도, 3년이 지나도 "언젠가는 뭔가 달라지겠지"라는 생각으로 같은 자리에 있을 수 있어요. 방향 없이 흘러가는 삶은 어느 순간 <em>"나 지금 뭐하고 있는 거지?"</em>라는 더 무거운 질문으로 돌아와요.
+
+탐색은 저절로 시작되지 않아요.`
+      },
+      {
+        label: "상담에서 이런 걸 함께 해요",
+        body: `희미해진 내적 나침반을 다시 깨우는 시간이에요.
+
+내가 언제 에너지를 느끼는지, 뭘 원하는지, 어떤 삶을 살고 싶은지 — 오랫동안 묻어뒀던 질문들을 천천히 꺼내봐요.`
       }
     ]
   },
@@ -1109,6 +1166,20 @@ const results = {
         label: "스스로에게 던져볼 질문",
         body: `<em>"지금 내가 기다리고 있는 '준비된 순간'은,
 언제쯤 올 것 같은가?"</em>`
+      },
+      {
+        label: "이 상태를 방치하면",
+        body: `준비가 될 때까지 기다리다 보면, 그 기다림이 습관이 돼요.
+
+6개월 후에도, 1년 후에도 "아직 준비가 안 됐어"라는 말을 하고 있을 수 있어요. 시작하지 못한 채 시간이 쌓이면, 나중엔 시작 자체가 더 무겁게 느껴져요.
+
+<em>완벽한 준비는 오지 않아요. 시작이 준비를 만들어요.</em>`
+      },
+      {
+        label: "상담에서 이런 걸 함께 해요",
+        body: `뭘 시작하고 싶은지, 뭐가 막고 있는지 함께 들여다봐요.
+
+크게 바꾸지 않아도 돼요. 지금 당장 떼어낼 수 있는 작은 한 발짝을 같이 찾는 시간이에요.`
       }
     ]
   },
@@ -1156,6 +1227,18 @@ const results = {
         label: "스스로에게 던져볼 질문",
         body: `<em>"지금 내가 하고 있는 선택들 중에서,
 진짜 내가 원해서 하는 것은 몇 가지인가?"</em>`
+      },
+      {
+        label: "이 상태를 방치하면",
+        body: `남의 기대에 맞추는 게 익숙해지면, 내가 뭘 원하는지 점점 더 모르게 돼요.
+
+겉으로는 잘 살고 있는 것처럼 보이지만, 그 불편함은 사라지지 않아요. 오히려 시간이 지날수록 더 선명해져요. 어느 순간 <em>"나는 왜 이렇게 살고 있지?"</em>라는 질문이 더 이상 무시할 수 없는 크기로 찾아와요.`
+      },
+      {
+        label: "상담에서 이런 걸 함께 해요",
+        body: `남의 기준과 내 기준을 분리하는 시간이에요.
+
+내가 진짜 원하는 게 뭔지, 어떤 삶이 나다운 삶인지 — 오랫동안 묻어뒀던 나를 꺼내보는 시간이에요.`
       }
     ]
   },
@@ -1202,6 +1285,20 @@ const results = {
         label: "스스로에게 던져볼 질문",
         body: `<em>"지금 내 안에서 느껴지는 이 감각,
 나는 그것에 얼마나 귀를 기울이고 있는가?"</em>`
+      },
+      {
+        label: "이 상태를 방치하면",
+        body: `지금 느껴지는 변화의 감각은 영원하지 않아요.
+
+확신이 없다는 이유로 계속 미루다 보면, 그 감각이 다시 희미해질 수 있어요. 변화의 문 앞에 서 있는 이 순간이 사실 가장 중요한 타이밍이에요.
+
+<em>이 감각이 선명할 때 움직이지 않으면, 다시 원래 자리로 돌아가는 데 오랜 시간이 걸릴 수 있어요.</em>`
+      },
+      {
+        label: "상담에서 이런 걸 함께 해요",
+        body: `지금 느끼고 있는 변화의 감각을 구체화하는 시간이에요.
+
+어떤 방향으로 가고 싶은지, 어떻게 시작하면 좋을지 — 이 감각이 흐릿해지기 전에 함께 방향을 잡아봐요.`
       }
     ]
   }
@@ -1286,12 +1383,14 @@ function showResult() {
   const type = getTopType();
   const r = results[type];
 
-  const sectionsHtml = r.sections.map(s => `
-    <div class="result-section">
+  const sectionsHtml = r.sections.map(s => {
+    const dataLabel = s.label === '이 상태를 방치하면' ? 'warning' : s.label === '상담에서 이런 걸 함께 해요' ? 'consult' : '';
+    return `
+    <div class="result-section" ${dataLabel ? `data-label="${dataLabel}"` : ''}>
       <p class="result-section-label">${s.label}</p>
       <div class="result-section-body">${s.body}</div>
     </div>
-  `).join('');
+  `}).join('');
 
   const allTypes = [
     { key: 'A', emoji: '🏃', name: '결승선을 모르는 마라토너', desc: '누구보다 열심히 달리는데, 왜 공허할까' },
