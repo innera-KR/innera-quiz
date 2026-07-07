@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light only">
+<meta name="supported-color-schemes" content="light">
 <title>이네라 나침반 테스트 — 나는 지금 어디쯤 서 있을까?</title>
 
 <!-- OG 태그 -->
@@ -37,6 +39,7 @@
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { color-scheme: light only; }
 
   body {
     font-family: 'Noto Sans KR', sans-serif;
@@ -44,6 +47,8 @@
     color: var(--text-main);
     min-height: 100vh;
     overflow-x: hidden;
+    color-scheme: light only;
+    forced-color-adjust: none;
   }
 
   /* 배경 텍스처 */
