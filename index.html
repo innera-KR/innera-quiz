@@ -730,6 +730,45 @@
     .intro-meta { flex-direction: column; gap: 12px; }
     .lead-box { padding: 24px; }
   }
+
+  /* 삼성 브라우저 다크모드 안내 배너 */
+  .samsung-notice {
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    z-index: 9999;
+    background: #0c2f5d;
+    color: #fff;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    padding: 13px 20px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 13px;
+    line-height: 1.5;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
+  }
+  .samsung-notice.show { display: flex; }
+  .samsung-notice span { color: rgba(255,255,255,0.9); }
+  .samsung-notice b { color: #c8a96e; font-weight: 500; }
+  .samsung-notice-close {
+    flex-shrink: 0;
+    background: rgba(255,255,255,0.15);
+    border: none;
+    color: #fff;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .samsung-notice-close:hover { background: rgba(255,255,255,0.28); }
+  @media (max-width: 600px) {
+    .samsung-notice { font-size: 12px; padding: 12px 16px; gap: 10px; }
+  }
 </style>
 <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js" integrity="sha384-TiCUE00h649CAMonG018J2ujOgDKW/kVWlChEuu4jK2vxfAAD0eZxzCKakxg55G4" crossorigin="anonymous"></script>
 </head>
@@ -1627,6 +1666,26 @@ function restartQuiz() {
   showScreen('screen-quiz');
   renderQuestion();
   window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+
+<!-- 삼성 브라우저 다크모드 안내 배너 -->
+<div class="samsung-notice" id="samsungNotice">
+  <span>화면이 어둡게 보이시나요? 삼성 인터넷 <b>메뉴 → 밝은 웹페이지</b>를 선택하면 정상적으로 보여요.</span>
+  <button class="samsung-notice-close" onclick="closeSamsungNotice()" aria-label="닫기">✕</button>
+</div>
+<script>
+(function() {
+  var ua = navigator.userAgent || '';
+  if (ua.indexOf('SamsungBrowser') !== -1 && !localStorage.getItem('samsungNoticeClosed')) {
+    var el = document.getElementById('samsungNotice');
+    if (el) el.classList.add('show');
+  }
+})();
+function closeSamsungNotice() {
+  var el = document.getElementById('samsungNotice');
+  if (el) el.classList.remove('show');
+  try { localStorage.setItem('samsungNoticeClosed', '1'); } catch(e) {}
 }
 </script>
 </body>
