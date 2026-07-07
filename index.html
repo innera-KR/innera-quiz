@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light">
-<title>이네라 나침반 테스트 — 나는 지금 어디쯤 서 있을까?</title>
+<title>이네라 나침반 테스트 : 나는 지금 어디쯤 서 있을까?</title>
 
 <!-- OG 태그 -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="이네라 나침반 테스트 — 나는 지금 어디쯤 서 있을까?">
+<meta property="og:title" content="이네라 나침반 테스트 : 나는 지금 어디쯤 서 있을까?">
 <meta property="og:description" content="20문항으로 알아보는 나의 삶의 유형. 자기결정이론 기반 5가지 유형 진단.">
 <meta property="og:image" content="https://innera-kr.github.io/innera-quiz/og-thumbnail.png">
 <meta property="og:image:width" content="1200">
@@ -19,7 +19,7 @@
 
 <!-- 트위터 카드 -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="이네라 나침반 테스트 — 나는 지금 어디쯤 서 있을까?">
+<meta name="twitter:title" content="이네라 나침반 테스트 : 나는 지금 어디쯤 서 있을까?">
 <meta name="twitter:description" content="20문항으로 알아보는 나의 삶의 유형. 자기결정이론 기반 5가지 유형 진단.">
 <meta name="twitter:image" content="https://innera-kr.github.io/innera-quiz/og-thumbnail.png">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;600&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
@@ -1171,7 +1171,7 @@ const results = {
         label: "상담에서 이런 걸 함께 해요",
         body: `희미해진 내적 나침반을 다시 깨우는 시간이에요.
 
-내가 언제 에너지를 느끼는지, 뭘 원하는지, 어떤 삶을 살고 싶은지 — 오랫동안 묻어뒀던 질문들을 천천히 꺼내봐요.`
+내가 언제 에너지를 느끼는지, 뭘 원하는지, 어떤 삶을 살고 싶은지. 오랫동안 묻어뒀던 질문들을 천천히 꺼내봐요.`
       }
     ]
   },
@@ -1291,7 +1291,7 @@ const results = {
         label: "상담에서 이런 걸 함께 해요",
         body: `남의 기준과 내 기준을 분리하는 시간이에요.
 
-내가 진짜 원하는 게 뭔지, 어떤 삶이 나다운 삶인지 — 오랫동안 묻어뒀던 나를 꺼내보는 시간이에요.`
+내가 진짜 원하는 게 뭔지, 어떤 삶이 나다운 삶인지. 오랫동안 묻어뒀던 나를 꺼내보는 시간이에요.`
       }
     ]
   },
@@ -1351,7 +1351,7 @@ const results = {
         label: "상담에서 이런 걸 함께 해요",
         body: `지금 느끼고 있는 변화의 감각을 구체화하는 시간이에요.
 
-어떤 방향으로 가고 싶은지, 어떻게 시작하면 좋을지 — 이 감각이 흐릿해지기 전에 함께 방향을 잡아봐요.`
+어떤 방향으로 가고 싶은지, 어떻게 시작하면 좋을지. 이 감각이 흐릿해지기 전에 함께 방향을 잡아봐요.`
       }
     ]
   }
@@ -1608,7 +1608,7 @@ function shareResult(type) {
 function shareToX(type) {
   const url = `${location.origin}${location.pathname}?result=${type}`;
   const typeNames = { A: '결승선을 모르는 마라토너', B: '닻을 올린 채 멈춘 사람', C: '출발선 앞에 서 있는 사람', D: '남의 대본 속에 사는 사람', E: '첫 장을 펼친 사람' };
-  const text = `나는 '${typeNames[type]}' 유형이 나왔어요.\n나의 삶 나침반 테스트 — Innera\n`;
+  const text = `나는 '${typeNames[type]}' 유형이 나왔어요.\n나의 삶 나침반 테스트 · Innera\n`;
   window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
 }
 
@@ -1622,7 +1622,7 @@ function shareToKakao(type) {
     objectType: 'feed',
     content: {
       title: `나는 '${typeNames[type]}' 유형이에요`,
-      description: '이네라 나침반 테스트 — 나는 지금 어디쯤 서 있을까?',
+      description: '이네라 나침반 테스트 : 나는 지금 어디쯤 서 있을까?',
       imageUrl: 'https://innera-kr.github.io/innera-quiz/og-thumbnail.png',
       link: {
         mobileWebUrl: url,
@@ -1671,7 +1671,7 @@ function restartQuiz() {
 
 <!-- 삼성 브라우저 다크모드 안내 배너 -->
 <div class="samsung-notice" id="samsungNotice">
-  <span>화면이 어둡게 보이시나요? 삼성 인터넷 <b>메뉴 → 밝은 웹페이지</b>를 선택하면 정상적으로 보여요.</span>
+  <span>화면이 어둡게 보이시나요? 삼성 인터넷 <b>오른쪽 하단 메뉴(⋮) → 밝게 보기</b>를 선택하면 정상적으로 보여요.</span>
   <button class="samsung-notice-close" onclick="closeSamsungNotice()" aria-label="닫기">✕</button>
 </div>
 <script>
