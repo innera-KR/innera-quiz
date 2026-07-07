@@ -296,6 +296,15 @@
     margin-top: 48px;
   }
 
+  .result-card-image {
+    width: 100%;
+    max-width: 640px;
+    margin: 0 auto 40px;
+    display: block;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(12,47,93,0.12);
+  }
+
   .result-type-badge {
     display: inline-flex;
     align-items: center;
@@ -1411,6 +1420,7 @@ function showResult() {
   `).join('');
 
   const html = `
+    <img class="result-card-image" src="result-${type.toLowerCase()}.png" alt="${r.badge}" />
     <div class="result-type-badge">
       <span class="result-emoji">${r.emoji}</span>
       <span>${r.badge}</span>
